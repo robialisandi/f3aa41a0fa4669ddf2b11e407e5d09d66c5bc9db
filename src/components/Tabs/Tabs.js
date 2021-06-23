@@ -46,7 +46,8 @@ function Tabs({ children, ...props }) {
     });
     setTabHeader(headers);
     setActive(headers[0]);
-  }, [children]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const changeTab = (name) => {
     console.log('tes', name);
