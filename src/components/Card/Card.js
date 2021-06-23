@@ -1,14 +1,18 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import Styled from 'styled-components';
 import Button from '../Button';
+
+import { useDispatch } from 'react-redux';
+import { addToCart, subtractQuantity } from '../../store/actions/cart';
 
 const CardWrapper = Styled.div`
   background: #FFFFFF;
   overflow: hidden;
   box-shadow: 0px 8px 10px rgba(10, 31, 68, 0.1);
   border-radius: 10px;
-  cursor: pointer;
 `;
 
 const CardContent = Styled.div`
@@ -70,13 +74,40 @@ const Image = Styled.img`
     height: 100%;
 `;
 
-function Card({ title, subTitle, price }) {
+const ButtonGrup = Styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ButtonQty = Styled.button`
+  border-radius: 5px;
+  background: #fff;
+  border: 1px solid #BFBFBF;
+  padding: 6px 10px;
+  font-size: 13px;
+
+  @media screen and (min-width: 400px) {
+    cursor: pointer;
+  }
+`;
+
+const Qty = Styled.span`
+  font-size: 12px;
+  width: 25px;
+  text-align: center;
+`;
+
+function Card({ title, subTitle, price, image, item }) {
+  const dispatch = useDispatch();
+  const { cart } = useSelector((state) => state.cart);
+  const filteItem = cart.find((produk) => produk.id === item.id);
   return (
     <CardWrapper>
       <ImageContainer>
         <ImagePosition>
           <ImageWrapper>
-            <Image src="https://images.unsplash.com/photo-1481070555726-e2fe8357725c" />
+            <Image src={image} />
           </ImageWrapper>
         </ImagePosition>
       </ImageContainer>
@@ -84,8 +115,34 @@ function Card({ title, subTitle, price }) {
         <Title>{title}</Title>
         <SubTitle>{subTitle}</SubTitle>
         <Footer>
-          <Price>{price}</Price>
-          <Button>ADD+</Button>
+          <Price>{price.toString()}</Price>
+          {filteItem && filteItem.quantity >= 1 ? (
+            <ButtonGrup>
+              <ButtonQty
+                onClick={() => {
+                  dispatch(subtractQuantity(item));
+                }}
+              >
+                -
+              </ButtonQty>
+              <Qty>{filteItem.quantity}</Qty>
+              <ButtonQty
+                onClick={() => {
+                  dispatch(addToCart(item));
+                }}
+              >
+                +
+              </ButtonQty>
+            </ButtonGrup>
+          ) : (
+            <Button
+              onClick={() => {
+                dispatch(addToCart(item));
+              }}
+            >
+              ADD+
+            </Button>
+          )}
         </Footer>
       </CardContent>
     </CardWrapper>
@@ -97,5 +154,7 @@ export default Card;
 Card.propTypes = {
   title: PropTypes.string.isRequired,
   subTitle: PropTypes.string.isRequired,
-  price: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+  item: PropTypes.object.isRequired,
 };

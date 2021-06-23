@@ -34,13 +34,13 @@ const Label = Styled.span`
   color: ${(props) => (props.dark ? '#424749' : '#ffffff')};
 `;
 
-function Button({ children, to, ...props }) {
+function Button({ children, to, onClick, ...props }) {
   return to ? (
     <LinkWrapper {...props}>
       <Label {...props}>{children}</Label>
     </LinkWrapper>
   ) : (
-    <ButtonWrapper {...props}>
+    <ButtonWrapper onClick={onClick} {...props}>
       <Label {...props}>{children}</Label>
     </ButtonWrapper>
   );
@@ -50,9 +50,9 @@ export default Button;
 
 Button.propTypes = {
   children: PropTypes.node.isRequired,
-  onClick: PropTypes.func,
   background: PropTypes.string,
   dark: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 
 Button.defaultProps = {

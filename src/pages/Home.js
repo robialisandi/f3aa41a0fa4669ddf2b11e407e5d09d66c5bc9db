@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Location from '../components/Location';
@@ -13,6 +14,7 @@ import Suggest from '../components/Suggest';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
 
 import { debounce } from '../utils/helpers';
+import { Products } from '../data/Product';
 
 const Container = styled.div`
   max-width: 375px;
@@ -75,6 +77,8 @@ const SuggestContent = styled.div`
 `;
 
 const Home = (props) => {
+  const { cart, total } = useSelector((state) => state.cart);
+  console.log('cart', cart);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [show, setShow] = useState(false);
@@ -132,49 +136,26 @@ const Home = (props) => {
       </TabsWrapper>
       <WrapperProduct>
         <Grid>
-          <Card
-            title="Roasted Chicken with Scrambled Egg"
-            subTitle="by Kulina - Uptown Lunch"
-            price="Rp 35,000"
-          />
-          <Card
-            title="Roasted Chicken with Scrambled Egg"
-            subTitle="by Kulina - Uptown Lunch"
-            price="Rp 35,000"
-          />
-          <Card
-            title="Roasted Chicken with Scrambled Egg"
-            subTitle="by Kulina - Uptown Lunch"
-            price="Rp 35,000"
-          />
-          <Card
-            title="Roasted Chicken with Scrambled Egg"
-            subTitle="by Kulina - Uptown Lunch"
-            price="Rp 35,000"
-          />
-          <Card
-            title="Roasted Chicken with Scrambled Egg"
-            subTitle="by Kulina - Uptown Lunch"
-            price="Rp 35,000"
-          />
-          <Card
-            title="Roasted Chicken with Scrambled Egg"
-            subTitle="by Kulina - Uptown Lunch"
-            price="Rp 35,000"
-          />
-          <Card
-            title="Roasted Chicken with Scrambled Egg"
-            subTitle="by Kulina - Uptown Lunch"
-            price="Rp 35,000"
-          />
-          <Card
-            title="Roasted Chicken with Scrambled Egg"
-            subTitle="by Kulina - Uptown Lunch"
-            price="Rp 35,000"
-          />
+          {Products &&
+            Products.map((item, index) => {
+              return (
+                <Card
+                  key={item.id}
+                  title={item.name}
+                  subTitle={item.merchant}
+                  price={item.price}
+                  image={item.image}
+                  item={item}
+                />
+              );
+            })}
         </Grid>
       </WrapperProduct>
-      <Cart items="20" price="25,000,000" />
+      <Cart
+        items={cart.length.toString()}
+        price={total}
+        show={cart.length > 0}
+      />
       <Modal show={show} handleClose={hideModal}>
         <HeadingModal>Cek manakan yang tersedia di lokasi kamu!</HeadingModal>
         <Input

@@ -7,6 +7,7 @@ import { IoCartOutline } from 'react-icons/io5';
 const CartContainer = styled.div`
   width: 100%;
   position: relative;
+  visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
 `;
 const AllWrapper = styled.div`
   display: flex;
@@ -68,7 +69,7 @@ const Shadow = styled.div`
 `;
 function Cart({ show, items, price, ...props }) {
   return (
-    <CartContainer>
+    <CartContainer show={show}>
       <AllWrapper>
         <CartWrapper>
           <TextWrapper>
@@ -93,11 +94,11 @@ export default Cart;
 Cart.propTypes = {
   show: PropTypes.bool,
   items: PropTypes.string,
-  price: PropTypes.string,
+  price: PropTypes.number,
 };
 
 Cart.defaultProps = {
   show: false,
   items: '0',
-  price: '0',
+  price: 0,
 };
