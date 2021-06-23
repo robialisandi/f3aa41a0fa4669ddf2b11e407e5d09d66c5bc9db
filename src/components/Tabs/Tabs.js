@@ -50,7 +50,6 @@ function Tabs({ children, ...props }) {
   }, []);
 
   const changeTab = (name) => {
-    console.log('tes', name);
     setActive(name);
   };
   return (

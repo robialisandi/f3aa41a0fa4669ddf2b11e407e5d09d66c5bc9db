@@ -9,17 +9,13 @@ const cart = (state = initialState, action) => {
   switch (action.type) {
     case types.ADD_TO_CART:
       let existedItem = state.cart.find((item) => item.id === action.item.id);
-      console.log('item', action.item);
-      console.log('exist', existedItem);
       if (existedItem) {
-        console.log('ada');
         action.item.quantity += 1;
         return {
           ...state,
           total: state.total + action.item.price,
         };
       } else {
-        console.log('tidak');
         action.item.quantity = 1;
         let newTotal = state.total + action.item.price;
 
@@ -35,7 +31,6 @@ const cart = (state = initialState, action) => {
 
       //calculating the total
       let newTotal = state.total - action.item.price * action.item.quantity;
-      console.log(action.item);
       return {
         ...state,
         cart: newItem,

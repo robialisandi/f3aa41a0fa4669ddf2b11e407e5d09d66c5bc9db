@@ -78,7 +78,6 @@ const SuggestContent = styled.div`
 
 const Home = (props) => {
   const { cart, total } = useSelector((state) => state.cart);
-  console.log('cart', cart);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [show, setShow] = useState(false);
